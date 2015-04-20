@@ -69,7 +69,7 @@ The simplest way to install is to click on 'Plugins' then 'Add' and type 'Employ
 
 * You should have access to the server where WordPress is installed. If you don't, see your system administrator.
 * Copy the plugin zip file up to your server and unzip it somewhere on the file system.
-* Copy the "empslight-com" folder into the /wp-content/plugins directory of your WordPress installation.
+* Copy the "employee-spotlight" folder into the /wp-content/plugins directory of your WordPress installation.
 * Login to your website and go to the Plugins section of your admin panel.
 * Look for "Employee Spotlight" and click Activate.
 
