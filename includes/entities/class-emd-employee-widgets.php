@@ -51,7 +51,8 @@ class empslight_com_recent_employees_widget extends Emd_Widget {
 		$layout = "<div class=\"widget-thumb\">
 <div class=\"person-img\" data-backimg=\"";
 		if (get_post_meta($post->ID, 'emd_employee_photo')) {
-			$layout.= wp_get_attachment_url(get_post_meta($post->ID, 'emd_employee_photo') [0]);
+			$purl = get_post_meta($post->ID, 'emd_employee_photo');
+                        $layout.= wp_get_attachment_url($purl[0]);
 		}
 		$layout.= "\"> </div>
 <a href=\"" . get_permalink() . "\" class=\"person-name\">" . get_the_title() . "</a>
@@ -103,7 +104,8 @@ class empslight_com_featured_employees_widget extends Emd_Widget {
 		$layout = "<div class=\"widget-thumb\">
 <div class=\"person-img\" data-backimg=\"";
 		if (get_post_meta($post->ID, 'emd_employee_photo')) {
-			$layout.= wp_get_attachment_url(get_post_meta($post->ID, 'emd_employee_photo') [0]);
+			$purl = get_post_meta($post->ID, 'emd_employee_photo');
+                        $layout.= wp_get_attachment_url($purl[0]);
 		}
 		$layout.= "\"> </div>
 <a href=\"" . get_permalink() . "\" class=\"person-name\">" . get_the_title() . "</a>
