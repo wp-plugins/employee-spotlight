@@ -3,7 +3,7 @@
  * Entity Related Shortcode Functions
  *
  * @package EMPSLIGHT_COM
- * @version 1.0.0
+ * @version 1.1.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -27,7 +27,11 @@ function empslight_com_employee_circle_grid_set_shc($atts, $args = Array() , $fo
 		'has_pages' => false,
 		'pageno' => $pageno,
 		'pgn_class' => '',
-		'theme' => 'na'
+		'theme' => 'na',
+		'hier' => 0,
+		'hier_type' => 'ul',
+		'hier_depth' => - 1,
+		'hier_class' => ''
 	);
 	$args_default = array(
 		'posts_per_page' => '9',
@@ -41,6 +45,11 @@ add_shortcode('employee_circle_grid', 'employee_circle_grid_list');
 function employee_circle_grid_list($atts) {
 	$show_shc = 1;
 	if ($show_shc == 1) {
+		wp_enqueue_script('jquery');
+		wp_enqueue_style('font-awesome');
+		wp_enqueue_style('employee-circle-grid-cdn');
+		wp_enqueue_script('employee-circle-grid-js');
+		add_action('wp_footer', 'emd_enq_allview');
 		$list = "<div class='emd-container'>";
 		$list.= empslight_com_employee_circle_grid_set_shc($atts);
 		$list.= "</div>";

@@ -4,7 +4,8 @@
 <div class="mainDetails row">
     <div class="person-photo col-md-4">
         <img alt="<?php echo get_the_title(); ?>" class="img-circle" src="<?php if (get_post_meta($post->ID, 'emd_employee_photo')) {
-	echo wp_get_attachment_url(get_post_meta($post->ID, 'emd_employee_photo') [0]);
+	$sval = get_post_meta($post->ID, 'emd_employee_photo');
+	echo wp_get_attachment_url($sval[0]);
 } ?>">
     </div>
     <div class="person-detail col-md-8">

@@ -3,7 +3,7 @@
  * Plugin Name: Employee Spotlight
  * Plugin URI: https://emarketdesign.com
  * Description: Employee Spotlight displays photo, bio, and contact information of your employees, founders, team or just yourself. Each employee has its own page.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: emarket-design
  * Author URI: https://emarketdesign.com
  * Text Domain: empslight-com
@@ -74,7 +74,7 @@ if (!class_exists('Employee_Spotlight')):
 		 * @return void
 		 */
 		private function define_constants() {
-			define('EMPSLIGHT_COM_VERSION', '1.0.0');
+			define('EMPSLIGHT_COM_VERSION', '1.1.0');
 			define('EMPSLIGHT_COM_AUTHOR', 'emarket-design');
 			define('EMPSLIGHT_COM_NAME', 'Employee Spotlight');
 			define('EMPSLIGHT_COM_PLUGIN_FILE', __FILE__);
@@ -133,7 +133,6 @@ if (!class_exists('Employee_Spotlight')):
 				if (!function_exists('emd_shc_button')) {
 					require_once EMPSLIGHT_COM_PLUGIN_DIR . 'includes/admin/wpas-btn-functions.php';
 				}
-				require_once EMPSLIGHT_COM_PLUGIN_DIR . 'includes/admin/misc-functions.php';
 				require_once EMPSLIGHT_COM_PLUGIN_DIR . 'includes/admin/glossary.php';
 			}
 			require_once EMPSLIGHT_COM_PLUGIN_DIR . 'includes/class-install-deactivate.php';

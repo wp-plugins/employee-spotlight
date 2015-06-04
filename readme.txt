@@ -5,7 +5,7 @@ Author URI: https://emarketdesign.com
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 4.0
 Tested up to: 4.2+
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: members profiles, our teams, team, team members, team plugin wordpress, profiles, teams, team manager, custom team management, custom team manager, responsive team manager, staff manager, team management, team manager, team member, team members, wordpress team manager, staff, meet, profiles, people, responsive, carousel, employees, employee, grid, social, company, intranet, directory,employee list, staff list, staff directory
@@ -21,6 +21,7 @@ Employee Spotlight comes with two responsive views which adjusts to the device s
 
 = Employee Spotlight Pro =
 * 10 unique, responsive, beautifully designed view layouts with many options
+* Ability to modify single employee pages using admin settings
 * Set display order of your profiles. Display order is applied to all view layout
 * Set text and background color of employee name tags (full name and job title)
 * Use *Visual Shortcode Builder* to create a subset of your profiles such as departments, groups, new hires, featured employees etc. and display it any view layout you choose
@@ -29,7 +30,7 @@ Employee Spotlight comes with two responsive views which adjusts to the device s
 
 [Employee Spotlight Pro](https://emdplugins.com/plugins/employee-spotlight-pro/)<br>
 [Employee Spotlight Pro DEMO](https://espotlight.emdplugins.com/)<br>
-[Employee Spotlight Pro DOCS](https://docs.emdplugins.com/docs/employee-spotlight-pro-professional-documentation/)<br>
+[Employee Spotlight Pro DOCS](https://docs.emdplugins.com/docs/employee-spotlight-professional-documentation/)<br>
 
 
 = WP Employee Pro =
@@ -46,7 +47,7 @@ Employee Spotlight comes with two responsive views which adjusts to the device s
 > 1. [Download App signature.](https://emdplugins.com/designs/)<br>
 > 2. [Download WP App Studio.](https://wordpress.org/plugins/wp-app-studio/) <br>
 > 3. [Import App signature to WP App Studio AUTOBAHN by clicking on Import button in the app list screen](https://wpas.emdplugins.com/articles/importing-and-exporting-apps/)<br>
-> 4. [Open up a ProDev account.](https://wpas.emdplugins.com/)<br>
+> 4. [Purchase a ProDev account.](https://wpas.emdplugins.com/)<br>
 > 5. Go to WP App Studio menu Applications page Click on the app signature imported and change the *app name* and *text domain* to your ProDev *app name* and *text domain* you purchased.<br>
 > 6. Make modifications to the design and Generate your plugin.<br>
 > 7. Download/Install/Activate your plugin.<br>
@@ -82,6 +83,10 @@ The simplest way to install is to click on 'Plugins' then 'Add' and type 'Employ
 6. Pro Edition offers Visual Shortcode Builder which you can use to create a subset of your employee profiles and display it using any of 10 views layouts.
 
 == Changelog ==
+
+= 1.1.0 =
+* Fixed the issue related to photos not getting changed in the editor
+* NEW Changed featured data display to checked icon
 
 = 1.0.0 =
 *Initial release

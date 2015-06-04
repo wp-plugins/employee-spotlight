@@ -3,7 +3,7 @@
  * Entity Widget Classes
  *
  * @package EMPSLIGHT_COM
- * @version 1.0.0
+ * @version 1.1.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -51,8 +51,8 @@ class empslight_com_recent_employees_widget extends Emd_Widget {
 		$layout = "<div class=\"widget-thumb\">
 <div class=\"person-img\" data-backimg=\"";
 		if (get_post_meta($post->ID, 'emd_employee_photo')) {
-			$purl = get_post_meta($post->ID, 'emd_employee_photo');
-                        $layout.= wp_get_attachment_url($purl[0]);
+			$sval = get_post_meta($post->ID, 'emd_employee_photo');
+			$layout.= wp_get_attachment_url($sval[0]);
 		}
 		$layout.= "\"> </div>
 <a href=\"" . get_permalink() . "\" class=\"person-name\">" . get_the_title() . "</a>
@@ -104,8 +104,8 @@ class empslight_com_featured_employees_widget extends Emd_Widget {
 		$layout = "<div class=\"widget-thumb\">
 <div class=\"person-img\" data-backimg=\"";
 		if (get_post_meta($post->ID, 'emd_employee_photo')) {
-			$purl = get_post_meta($post->ID, 'emd_employee_photo');
-                        $layout.= wp_get_attachment_url($purl[0]);
+			$sval = get_post_meta($post->ID, 'emd_employee_photo');
+			$layout.= wp_get_attachment_url($sval[0]);
 		}
 		$layout.= "\"> </div>
 <a href=\"" . get_permalink() . "\" class=\"person-name\">" . get_the_title() . "</a>

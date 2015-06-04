@@ -7,7 +7,8 @@ $ent_attrs = get_option('empslight_com_attr_list');
 <article class="col-md-3 col-sm-6 person">
     <div class="person-thumb in">
         <div class="person-img img-circle" data-backimg="<?php if (get_post_meta($post->ID, 'emd_employee_photo')) {
-	echo wp_get_attachment_url(get_post_meta($post->ID, 'emd_employee_photo') [0]);
+	$sval = get_post_meta($post->ID, 'emd_employee_photo');
+	echo wp_get_attachment_url($sval[0]);
 } ?>"></div>
         <div class="person-tag text-center">
             <a href="<?php echo get_permalink(); ?>" class="person-name"><?php echo get_the_title(); ?></a>

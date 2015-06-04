@@ -2,7 +2,7 @@
 /**
  * Install and Deactivate Plugin Functions
  * @package EMPSLIGHT_COM
- * @version 1.0.0
+ * @version 1.1.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -49,6 +49,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				$this,
 				'tinymce_fix'
 			));
+			add_filter('get_media_item_args', 'emd_media_item_args');
 		}
 		/**
 		 * Runs on plugin install to setup custom post types and taxonomies
@@ -174,7 +175,12 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 					'label' => __('Employees', 'empslight-com') ,
 					'unique_keys' => Array(
 						'emd_employee_email'
-					)
+					) ,
+					'req_blt' => Array(
+						'blt_title' => Array(
+							'msg' => __('Title', 'empslight-com')
+						) ,
+					) ,
 				) ,
 			);
 			update_option($this->option_name . '_ent_list', $ent_list);
@@ -192,6 +198,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Featured', 'empslight-com') ,
 				'display_type' => 'checkbox',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 0,
 				'list_visible' => 1,
 				'desc' => __('Sets employee as featured which can be used to select employees in available views using Visual Shortcode Builder and Featured employee widget.', 'empslight-com') ,
@@ -205,6 +212,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Photo', 'empslight-com') ,
 				'display_type' => 'thickbox_image',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 0,
 				'list_visible' => 1,
 				'desc' => __('Photo of the employee. 250x250 is the preferred size.', 'empslight-com') ,
@@ -216,6 +224,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Job Title', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 0,
 				'list_visible' => 1,
 				'type' => 'char',
@@ -225,6 +234,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Primary Address', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 0,
 				'list_visible' => 0,
 				'type' => 'char',
@@ -234,6 +244,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Phone', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 1,
 				'list_visible' => 0,
 				'type' => 'char',
@@ -243,6 +254,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Mobile', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 1,
 				'list_visible' => 0,
 				'type' => 'char',
@@ -252,6 +264,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Email', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 1,
+				'srequired' => 0,
 				'filterable' => 0,
 				'list_visible' => 1,
 				'type' => 'char',
@@ -263,6 +276,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Facebook', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 0,
 				'list_visible' => 0,
 				'type' => 'char',
@@ -272,6 +286,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Google+', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 0,
 				'list_visible' => 0,
 				'type' => 'char',
@@ -281,6 +296,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Twitter', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 0,
 				'list_visible' => 0,
 				'type' => 'char',
@@ -290,6 +306,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Linkedin', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 0,
 				'list_visible' => 0,
 				'type' => 'char',
@@ -299,6 +316,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'label' => __('Github', 'empslight-com') ,
 				'display_type' => 'text',
 				'required' => 0,
+				'srequired' => 0,
 				'filterable' => 1,
 				'list_visible' => 0,
 				'type' => 'char',
@@ -306,15 +324,27 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 			if (!empty($attr_list)) {
 				update_option($this->option_name . '_attr_list', $attr_list);
 			}
+			if (!empty($glob_list)) {
+				update_option($this->option_name . '_glob_list', $glob_list);
+			}
+			if (!empty($glob_forms_list)) {
+				update_option($this->option_name . '_glob_forms_list', $glob_forms_list);
+			}
 			$tax_list['emd_employee']['groups'] = Array(
 				'label' => __('Groups', 'empslight-com') ,
 				'default' => '',
-				'type' => 'multi'
+				'type' => 'multi',
+				'hier' => 0,
+				'required' => 0,
+				'srequired' => 0
 			);
 			$tax_list['emd_employee']['office_locations'] = Array(
 				'label' => __('Locations', 'empslight-com') ,
 				'default' => '',
-				'type' => 'multi'
+				'type' => 'multi',
+				'hier' => 0,
+				'required' => 0,
+				'srequired' => 0
 			);
 			if (!empty($tax_list)) {
 				update_option($this->option_name . '_tax_list', $tax_list);
@@ -374,7 +404,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 ?>
 <div class="updated">
 <?php
-				printf('<p><a href="%1s" target="_blank"> %2$s </a>%3$s<a style="float:right;" href="%4$s"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span>%5$s</a></p>', 'https://docs.emdplugins.com/docs/employee-spotlight-community-documentation/', __('New To Employee Spotlight? Review the documentation!', 'wpas') , __('&#187;', 'wpas') , esc_url(add_query_arg($this->option_name . '_adm_notice1', true)) , __('Dismiss', 'wpas'));
+				printf('<p><a href="%1s" target="_blank"> %2$s </a>%3$s<a style="float:right;" href="%4$s"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span>%5$s</a></p>', 'https://docs.emdplugins.com/docs/employee-spotlight-community-documentation/?pk_campaign=empslight-com&pk_source=plugin&pk_medium=link&pk_content=notice', __('New To Employee Spotlight? Review the documentation!', 'wpas') , __('&#187;', 'wpas') , esc_url(add_query_arg($this->option_name . '_adm_notice1', true)) , __('Dismiss', 'wpas'));
 ?>
 </div>
 <?php
@@ -386,7 +416,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 ?>
 <div class="updated">
 <?php
-				printf('<p><a href="%1s" target="_blank"> %2$s </a>%3$s<a style="float:right;" href="%4$s"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span>%5$s</a></p>', 'https://emdplugins.com/plugins/employee-spotlight-pro/', __('Upgrade to Professional Version Now!', 'wpas') , __('&#187;', 'wpas') , esc_url(add_query_arg($this->option_name . '_adm_notice2', true)) , __('Dismiss', 'wpas'));
+				printf('<p><a href="%1s" target="_blank"> %2$s </a>%3$s<a style="float:right;" href="%4$s"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span>%5$s</a></p>', 'https://emdplugins.com/plugins/employee-spotlight-pro/?pk_campaign=empslight-com&pk_source=plugin&pk_medium=link&pk_content=notice', __('Upgrade to Professional Version Now!', 'wpas') , __('&#187;', 'wpas') , esc_url(add_query_arg($this->option_name . '_adm_notice2', true)) , __('Dismiss', 'wpas'));
 ?>
 </div>
 <?php
