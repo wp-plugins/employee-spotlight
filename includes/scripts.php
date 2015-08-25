@@ -3,7 +3,7 @@
  * Enqueue Scripts Functions
  *
  * @package EMPSLIGHT_COM
- * @version 1.1.0
+ * @version 1.2.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -17,18 +17,23 @@ add_action('admin_enqueue_scripts', 'empslight_com_load_admin_enq');
  */
 function empslight_com_load_admin_enq($hook) {
 	global $typenow;
+	$dir_url = EMPSLIGHT_COM_PLUGIN_URL;
 	if ($hook == 'edit-tags.php') {
 		return;
 	}
-	if ($hook == 'toplevel_page_empslight_com' || $hook == 'spotlight_page_empslight_com_notify' || $hook == 'spotlight_page_empslight_com_settings') {
+	if (isset($_GET['page']) && in_array($_GET['page'], Array(
+		'empslight_com',
+		'empslight_com_notify',
+		'empslight_com_settings'
+	))) {
 		wp_enqueue_script('accordion');
 		return;
-	} else if (in_array($hook, Array(
-		'spotlight_page_empslight_com_store',
-		'spotlight_page_empslight_com_designs',
-		'spotlight_page_empslight_com_support'
+	} else if (isset($_GET['page']) && in_array($_GET['page'], Array(
+		'empslight_com_store',
+		'empslight_com_designs',
+		'empslight_com_support'
 	))) {
-		wp_enqueue_style('admin-tabs', EMPSLIGHT_COM_PLUGIN_URL . 'assets/css/admin-store.css');
+		wp_enqueue_style('admin-tabs', $dir_url . 'assets/css/admin-store.css');
 		return;
 	}
 	if (in_array($typenow, Array(
@@ -62,14 +67,16 @@ function empslight_com_load_admin_enq($hook) {
 					}
 				}
 			}
-			wp_enqueue_script('unique_validate-js', EMPSLIGHT_COM_PLUGIN_URL . 'assets/js/unique_validate.js', array(
+			wp_enqueue_script('unique_validate-js', $dir_url . 'assets/js/unique_validate.js', array(
 				'jquery',
 				'jquery-validate'
 			) , EMPSLIGHT_COM_VERSION, true);
 			wp_localize_script("unique_validate-js", 'unique_vars', $unique_vars);
+		} elseif ($hook == 'edit.php') {
+			wp_enqueue_style('empslight-com-allview-css', EMPSLIGHT_COM_PLUGIN_URL . '/assets/css/allview.css');
 		}
 		if ($datetime_enq == 1) {
-			wp_enqueue_script("jquery-ui-timepicker", EMPSLIGHT_COM_PLUGIN_URL . 'assets/ext/emd-meta-box/js/jqueryui/jquery-ui-timepicker-addon.js', array(
+			wp_enqueue_script("jquery-ui-timepicker", $dir_url . 'assets/ext/emd-meta-box/js/jqueryui/jquery-ui-timepicker-addon.js', array(
 				'jquery-ui-datepicker',
 				'jquery-ui-slider'
 			) , EMPSLIGHT_COM_VERSION, true);
@@ -89,21 +96,37 @@ add_action('wp_enqueue_scripts', 'empslight_com_frontend_scripts');
  */
 function empslight_com_frontend_scripts() {
 	$dir_url = EMPSLIGHT_COM_PLUGIN_URL;
-	if (is_page()) {
-		$grid_vars = Array();
-		$local_vars['ajax_url'] = admin_url('admin-ajax.php');
-		$wpas_shc_list = get_option('empslight_com_shc_list');
-		wp_register_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
-		wp_register_style('employee-circle-grid-cdn', $dir_url . 'assets/css/view-employee-circle-grid.css');
-		wp_register_script('employee-circle-grid-js', $dir_url . 'assets/js/employee-circle-grid.js');
-		wp_register_style('allview-css', $dir_url . '/assets/css/allview.css');
-		return;
-	}
+	$grid_vars = Array();
+	$local_vars['ajax_url'] = admin_url('admin-ajax.php');
+	$wpas_shc_list = get_option('empslight_com_shc_list');
+	wp_register_style('recent-employees-css', EMPSLIGHT_COM_PLUGIN_URL . 'assets/css/recent-employees.css');
+	wp_register_style('featured-employees-css', EMPSLIGHT_COM_PLUGIN_URL . 'assets/css/featured-employees.css');
+	wp_register_script('recent-employees-js', EMPSLIGHT_COM_PLUGIN_URL . 'assets/js/recent-employees.js');
+	wp_register_script('featured-employees-js', EMPSLIGHT_COM_PLUGIN_URL . 'assets/js/featured-employees.js');
+	wp_register_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
+	wp_register_style('employee-circle-grid-cdn', $dir_url . 'assets/css/view-employee-circle-grid.css');
+	wp_register_style('single-employee-cdn', $dir_url . 'assets/css/view-single-employee.css');
+	wp_register_script('employee-circle-grid-js', $dir_url . 'assets/js/employee-circle-grid.js');
+	wp_register_style('employee-circle-grid-cdn', $dir_url . 'assets/css/view-employee-circle-grid.css');
+	wp_register_script('employee-circle-grid-js', $dir_url . 'assets/js/employee-circle-grid.js');
+	wp_register_style('empslight-com-allview-css', $dir_url . '/assets/css/allview.css');
 	if (is_single() && get_post_type() == 'emd_employee') {
 		wp_enqueue_script('jquery');
-		wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
-		wp_enqueue_style('single-employee-cdn', $dir_url . 'assets/css/view-single-employee.css');
-		wp_enqueue_style('allview-css', $dir_url . '/assets/css/allview.css');
+		wp_enqueue_style('font-awesome');
+		wp_enqueue_style('single-employee-cdn');
+		wp_enqueue_script('single-employee-cdn');
+		wp_enqueue_style('empslight-com-allview-css');
 		return;
+	}
+}
+/**
+ * Enqueue if allview css is not enqueued
+ *
+ * @since WPAS 4.5
+ *
+ */
+function empslight_com_enq_allview() {
+	if (!wp_style_is('empslight-com-allview-css', 'enqueued')) {
+		wp_enqueue_style('empslight-com-allview-css');
 	}
 }

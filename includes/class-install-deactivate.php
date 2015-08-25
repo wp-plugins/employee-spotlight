@@ -2,7 +2,7 @@
 /**
  * Install and Deactivate Plugin Functions
  * @package EMPSLIGHT_COM
- * @version 1.1.0
+ * @version 1.2.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -173,6 +173,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 			$ent_list = Array(
 				'emd_employee' => Array(
 					'label' => __('Employees', 'empslight-com') ,
+					'sortable' => 0,
 					'unique_keys' => Array(
 						'emd_employee_email'
 					) ,
@@ -325,16 +326,23 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				update_option($this->option_name . '_attr_list', $attr_list);
 			}
 			if (!empty($glob_list)) {
-				update_option($this->option_name . '_glob_list', $glob_list);
+				update_option($this->option_name . '_glob_init_list', $glob_list);
+				if (get_option($this->option_name . '_glob_list') === false) {
+					update_option($this->option_name . '_glob_list', $glob_list);
+				}
 			}
 			if (!empty($glob_forms_list)) {
-				update_option($this->option_name . '_glob_forms_list', $glob_forms_list);
+				update_option($this->option_name . '_glob_forms_init_list', $glob_forms_list);
+				if (get_option($this->option_name . '_glob_forms_list') === false) {
+					update_option($this->option_name . '_glob_forms_list', $glob_forms_list);
+				}
 			}
 			$tax_list['emd_employee']['groups'] = Array(
 				'label' => __('Groups', 'empslight-com') ,
 				'default' => '',
 				'type' => 'multi',
 				'hier' => 0,
+				'sortable' => 0,
 				'required' => 0,
 				'srequired' => 0
 			);
@@ -343,6 +351,7 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 				'default' => '',
 				'type' => 'multi',
 				'hier' => 0,
+				'sortable' => 0,
 				'required' => 0,
 				'srequired' => 0
 			);

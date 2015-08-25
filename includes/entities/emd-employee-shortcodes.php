@@ -3,7 +3,7 @@
  * Entity Related Shortcode Functions
  *
  * @package EMPSLIGHT_COM
- * @version 1.1.0
+ * @version 1.2.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -49,7 +49,7 @@ function employee_circle_grid_list($atts) {
 		wp_enqueue_style('font-awesome');
 		wp_enqueue_style('employee-circle-grid-cdn');
 		wp_enqueue_script('employee-circle-grid-js');
-		add_action('wp_footer', 'emd_enq_allview');
+		add_action('wp_footer', 'empslight_com_enq_allview');
 		$list = "<div class='emd-container'>";
 		$list.= empslight_com_employee_circle_grid_set_shc($atts);
 		$list.= "</div>";

@@ -3,7 +3,7 @@
  * Entity Class
  *
  * @package EMPSLIGHT_COM
- * @version 1.1.0
+ * @version 1.2.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -102,7 +102,8 @@ class Emd_Employee extends Emd_Entity {
 						'term' => $term->slug,
 						'taxonomy' => $column_id
 					) , admin_url('edit.php'));
-					$ret[] = sprintf('<a href="%s">%s</a>', $url, $term->name);
+					$a_class = preg_replace('/^emd_/', '', $this->post_type);
+					$ret[] = sprintf('<a href="%s"  class="' . $a_class . '-tax ' . $term->slug . '">%s</a>', $url, $term->name);
 				}
 			}
 			echo implode(', ', $ret);
@@ -126,7 +127,7 @@ class Emd_Employee extends Emd_Entity {
 				if (!empty($image_list)) {
 					$value = "";
 					foreach ($image_list as $myimage) {
-						$value.= "<img src='" . $myimage['url'] . "' >";
+						$value.= "<img style='max-width:100%;height:auto;' src='" . $myimage['url'] . "' >";
 					}
 				}
 			break;
@@ -164,6 +165,8 @@ class Emd_Employee extends Emd_Entity {
 			case 'checkbox':
 				if ($value == 1) {
 					$value = '<span class="dashicons dashicons-yes"></span>';
+				} elseif ($value == 0) {
+					$value = '<span class="dashicons dashicons-no-alt"></span>';
 				}
 			break;
 		}
@@ -215,45 +218,6 @@ class Emd_Employee extends Emd_Entity {
 				'excerpt',
 			)
 		));
-		$office_locations_nohr_labels = array(
-			'name' => __('Locations', 'empslight-com') ,
-			'singular_name' => __('Location', 'empslight-com') ,
-			'search_items' => __('Search Locations', 'empslight-com') ,
-			'popular_items' => __('Popular Locations', 'empslight-com') ,
-			'all_items' => __('All', 'empslight-com') ,
-			'parent_item' => null,
-			'parent_item_colon' => null,
-			'edit_item' => __('Edit Location', 'empslight-com') ,
-			'update_item' => __('Update Location', 'empslight-com') ,
-			'add_new_item' => __('Add New Location', 'empslight-com') ,
-			'new_item_name' => __('Add New Location Name', 'empslight-com') ,
-			'separate_items_with_commas' => __('Seperate Locations with commas', 'empslight-com') ,
-			'add_or_remove_items' => __('Add or Remove Locations', 'empslight-com') ,
-			'choose_from_most_used' => __('Choose from the most used Locations', 'empslight-com') ,
-			'menu_name' => __('Locations', 'empslight-com') ,
-		);
-		register_taxonomy('office_locations', array(
-			'emd_employee'
-		) , array(
-			'hierarchical' => false,
-			'labels' => $office_locations_nohr_labels,
-			'public' => true,
-			'show_ui' => true,
-			'show_in_nav_menus' => true,
-			'show_in_menu' => false,
-			'show_tagcloud' => true,
-			'update_count_callback' => '_update_post_term_count',
-			'query_var' => true,
-			'rewrite' => array(
-				'slug' => 'office_locations'
-			) ,
-			'capabilities' => array(
-				'manage_terms' => 'manage_office_locations',
-				'edit_terms' => 'edit_office_locations',
-				'delete_terms' => 'delete_office_locations',
-				'assign_terms' => 'assign_office_locations'
-			) ,
-		));
 		$groups_nohr_labels = array(
 			'name' => __('Groups', 'empslight-com') ,
 			'singular_name' => __('Group', 'empslight-com') ,
@@ -293,6 +257,45 @@ class Emd_Employee extends Emd_Entity {
 				'assign_terms' => 'assign_groups'
 			) ,
 		));
+		$office_locations_nohr_labels = array(
+			'name' => __('Locations', 'empslight-com') ,
+			'singular_name' => __('Location', 'empslight-com') ,
+			'search_items' => __('Search Locations', 'empslight-com') ,
+			'popular_items' => __('Popular Locations', 'empslight-com') ,
+			'all_items' => __('All', 'empslight-com') ,
+			'parent_item' => null,
+			'parent_item_colon' => null,
+			'edit_item' => __('Edit Location', 'empslight-com') ,
+			'update_item' => __('Update Location', 'empslight-com') ,
+			'add_new_item' => __('Add New Location', 'empslight-com') ,
+			'new_item_name' => __('Add New Location Name', 'empslight-com') ,
+			'separate_items_with_commas' => __('Seperate Locations with commas', 'empslight-com') ,
+			'add_or_remove_items' => __('Add or Remove Locations', 'empslight-com') ,
+			'choose_from_most_used' => __('Choose from the most used Locations', 'empslight-com') ,
+			'menu_name' => __('Locations', 'empslight-com') ,
+		);
+		register_taxonomy('office_locations', array(
+			'emd_employee'
+		) , array(
+			'hierarchical' => false,
+			'labels' => $office_locations_nohr_labels,
+			'public' => true,
+			'show_ui' => true,
+			'show_in_nav_menus' => true,
+			'show_in_menu' => true,
+			'show_tagcloud' => true,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var' => true,
+			'rewrite' => array(
+				'slug' => 'office_locations'
+			) ,
+			'capabilities' => array(
+				'manage_terms' => 'manage_office_locations',
+				'edit_terms' => 'edit_office_locations',
+				'delete_terms' => 'delete_office_locations',
+				'assign_terms' => 'assign_office_locations'
+			) ,
+		));
 	}
 	/**
 	 * Set metabox fields,labels,filters, comments, relationships if exists
@@ -301,6 +304,8 @@ class Emd_Employee extends Emd_Entity {
 	 *
 	 */
 	public function set_filters() {
+		$search_args = Array();
+		$filter_args = Array();
 		$this->sing_label = __('Employee', 'empslight-com');
 		$this->plural_label = __('Employees', 'empslight-com');
 		$this->menu_entity = 'emd_employee';

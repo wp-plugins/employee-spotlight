@@ -178,7 +178,7 @@ class Emd_Entity {
 ?>
 			<script type="text/javascript">
 			jQuery(document).ready(function($){
-					$('h2 a.add-new-h2').after('<a id="opt-<?php echo str_replace("_", "-", $this->post_type); ?>" class="add-new-h2" href="<?php echo admin_url('edit.php?post_type=' . $this->menu_entity . '&page=operations_' . $this->post_type); ?>" ><?php _e('Operations', 'emd-plugins'); ?></a>');
+					$('h1 a.page-title-action').after('<a id="opt-<?php echo str_replace("_", "-", $this->post_type); ?>" class="add-new-h2" href="<?php echo admin_url('edit.php?post_type=' . $this->menu_entity . '&page=operations_' . $this->post_type); ?>" ><?php _e('Operations', 'emd-plugins'); ?></a>');
 					$('li.opt_<?php echo $this->post_type; ?>').html('');
 					});     
 		</script>
@@ -240,6 +240,19 @@ class Emd_Entity {
 		);
 		$myapp = str_replace("-", "_", $this->textdomain);
 		$attr_list = get_option($myapp . '_attr_list');
+		$sform_list = Array();
+		$shc_list = get_option($myapp . '_shc_list');
+		if(!empty($shc_list) && !empty($shc_list['forms'])){
+			foreach($shc_list['forms'] as $kform => $sforms){
+				if($sforms['type'] == 'submit'){
+					$sform_list[] = $kform;
+				}
+			}
+		}
+		if(!empty($sform_list)){
+			$glob_forms_list = get_option($myapp . '_glob_forms_list');
+		}
+
 		if (!empty($attr_list[$this->post_type])) {
 			foreach ($attr_list[$this->post_type] as $kattr => $vattr) {
 				if ($vattr['visible'] == 1) {
@@ -283,6 +296,8 @@ class Emd_Entity {
 						'placeholder',
 						'field_type',
 						'address_field',
+						'data-formula',
+						'data-cell',
 					);
 					foreach ($attr_fields as $attr_field) {
 						if (isset($vattr[$attr_field])) {
@@ -291,6 +306,17 @@ class Emd_Entity {
 					}
 					$this->boxes[0]['fields'][$kattr]['class'] = $kattr;
 					//validation
+					if(!empty($sform_list)){
+						$vattr_req = 0;
+						foreach($sform_list as $sform){
+							if(isset($glob_forms_list[$sform][$kattr]) && isset($glob_forms_list[$sform][$kattr]['req'])){
+							 	if($glob_forms_list[$sform][$kattr]['req'] == 1){
+									$vattr_req = 1;
+								}
+							}	
+						}
+						$vattr['required'] = $vattr_req;
+					}
 					if ($vattr['required'] == 1) {
 						$this->boxes[0]['validation']['rules'][$kattr]['required'] = true;
 					} else {

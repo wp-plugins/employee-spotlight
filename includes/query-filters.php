@@ -3,7 +3,7 @@
  * Query Filter Functions
  *
  * @package EMPSLIGHT_COM
- * @version 1.1.0
+ * @version 1.2.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;

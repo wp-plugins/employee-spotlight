@@ -2,10 +2,21 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'EMD_MB_Text_Field' ) )
+if ( ! class_exists( 'EMD_MB_Calculated_Field' ) )
 {
-	class EMD_MB_Text_Field extends EMD_MB_Field
+	class EMD_MB_Calculated_Field extends EMD_MB_Field
 	{
+		/**
+                 * Enqueue scripts and styles
+                 *
+                 * @return void
+                 */
+                static function admin_enqueue_scripts()
+                {
+                        wp_enqueue_script( 'wpas-calculate', EMD_MB_URL . '../calculate/wpas-calculate.min.js');
+                        wp_enqueue_script( 'calculate', EMD_MB_JS_URL . 'calculate.js');
+                }
+
 		/**
 		 * Get field HTML
 		 *
@@ -17,14 +28,15 @@ if ( ! class_exists( 'EMD_MB_Text_Field' ) )
 		static function html( $meta, $field )
 		{
 			return sprintf(
-				'<input type="text" class="emd-mb-text" name="%s" id="%s" value="%s" placeholder="%s" size="%s" %s %s>%s',
+				'<input type="text" class="emd-mb-text" name="%s" id="%s" value="%s" placeholder="%s" size="%s" %s data-formula="%s" data-cell="%s" readonly>%s',
 				$field['field_name'],
 				$field['id'],
 				$meta,
 				$field['placeholder'],
 				$field['size'],
 				!$field['datalist'] ?  '' : "list='{$field['datalist']['id']}'",
-				isset($field['data-cell']) ? "data-cell='{$field['data-cell']}'" : '',
+				str_replace("\"","'",$field['data-formula']),
+				$field['data-cell'],
 				self::datalist_html($field)
 			);
 		}
