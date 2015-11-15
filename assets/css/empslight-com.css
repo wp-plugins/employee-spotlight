@@ -1,0 +1,33 @@
+/* THEME CSS STARTS */
+.ui-widget {
+font-size: 12px !important;
+}
+.ui-widget-content{
+font-weight: normal !important;
+border:none;
+}
+.ui-state-default{
+border:none !important;
+}
+#edittag {
+padding:10px !important;
+}
+.form-wrap,.tagcloud{
+padding:10px !important;
+}
+.button-secondary{
+color: #333333 !important;
+}
+.wp-core-ui .button-primary{
+color: #FFFFFF !important;
+}
+#operations-content{
+padding:20px;
+}
+#poststuff .inside{
+padding:10px;
+}
+.post-com-count {
+float:left;
+}
+/* THEME CSS ENDS */
