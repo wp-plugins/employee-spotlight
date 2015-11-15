@@ -448,11 +448,11 @@ if (!class_exists('Empslight_Com_Install_Deactivate')):
 			if (isset($_GET[$this->option_name . '_adm_notice3'])) {
 				update_option($this->option_name . '_adm_notice3', true);
 			}
-			if (current_user_can('manage_options') && get_option($this->option_name . '_adm_notice3') != 1 && date("Y-m-d H:i:s") < '2015-11-18') {
+			if (current_user_can('manage_options') && get_option($this->option_name . '_adm_notice3') != 1 && date("Y-m-d H:i:s") < '2015-11-19') {
 ?>
-<div class="updated">
+<div class="updated" style="background-color:#7ad03a;color:white;">
 <?php
-				printf('<p><a href="%1s" target="_blank"> %2$s </a>%3$s<a style="float:right;" href="%4$s"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span>%5$s</a></p>', 'https://espotlight.emdplugins.com/win-a-free-employee-spotlight-pro/?pk_campaign=empslight-com&pk_source=plugin&pk_medium=link&pk_content=notice-raffle', __('Win a Free Employee Spotlight Pro!', 'wpas') , __('&#187;', 'wpas') , esc_url(add_query_arg($this->option_name . '_adm_notice3', true)) , __('Dismiss', 'wpas'));
+				printf('<p><a href="%1s" style="color:white;" target="_blank"> %2$s </a>%3$s<a style="float:right;color:white;" href="%4$s"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span>%5$s</a></p>', 'https://espotlight.emdplugins.com/win-a-free-employee-spotlight-pro/?pk_campaign=empslight-com&pk_source=plugin&pk_medium=link&pk_content=notice-raffle', __('Win a Free Employee Spotlight Pro!', 'wpas') , __('&#187;', 'wpas') , esc_url(add_query_arg($this->option_name . '_adm_notice3', true)) , __('Dismiss', 'wpas'));
 ?>
 </div>
 <?php
