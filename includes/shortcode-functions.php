@@ -20,6 +20,23 @@ if (!defined('ABSPATH')) exit;
  */
 function emd_shc_get_layout_list($atts, $args, $args_default, $fields) {
 	global $wp_rewrite;
+	if(!empty($atts['filter'])){
+		$atts_filters = explode(";",$atts['filter']);
+		foreach($atts_filters as $afilter){
+			$afilter_arr = explode("::",$afilter);
+			if($afilter_arr[0] == 'misc'){
+				$misc_filters[$afilter_arr[1]] = $afilter_arr[3];
+			}
+		}
+		if(!empty($misc_filters)){
+			foreach($misc_filters as $kmisc => $vmisc){
+				if(isset($args_default[$kmisc])){
+					$args_default[$kmisc] = $vmisc;
+				}
+			}
+		}
+	}
+	
 	//fields -- app , class, shc , form, has_pages , pageno, theme
 	if ($fields['has_pages'] && empty($args)) {
 		if (is_front_page() && get_query_var('pagename') == get_post(get_query_var('page_id'))->post_name) {
@@ -35,6 +52,12 @@ function emd_shc_get_layout_list($atts, $args, $args_default, $fields) {
 			$fields['pageno'] = 1;	
 		}	
 	}
+	if(!empty($args_default['filter'])){
+		$emd_query_def = new Emd_Query($fields['class'], $fields['app'], $fields['shc']);
+		$emd_query_def->args_filter($args_default['filter']);
+		$args_default = array_merge($args_default,$emd_query_def->args);
+	}
+		
 	if (empty($args)) {
 		if (is_array($atts) && !empty($atts['filter'])) {
 			$emd_query = new Emd_Query($fields['class'], $fields['app'], $fields['shc']);
@@ -54,7 +77,7 @@ function emd_shc_get_layout_list($atts, $args, $args_default, $fields) {
 	}
 	$has_limit_by = get_option($fields['app'] . "_has_limitby_cap");
 	if (isset($has_limit_by) && $has_limit_by == 1) {
-		$pids = apply_filters('emd_limit_by', Array() , $fields['app'], $args['post_type']);
+		$pids = apply_filters('emd_limit_by', Array() , $fields['app'], $args['post_type'], 'frontend');
 		if(!empty($pids)){
 			$args['post__in'] = $pids;
 		}
@@ -64,6 +87,9 @@ function emd_shc_get_layout_list($atts, $args, $args_default, $fields) {
         }
 	else {	
 		$args['context'] = $fields['shc'];
+		if(!empty($misc_filters) && !empty($misc_filters['post_id'])){
+			$args = Array('post__in' => explode(",",$misc_filters['post_id']), 'post_type' => $args['post_type']);
+		}
 		$myshc_query = new WP_Query($args);
 		if ($myshc_query->have_posts()) {
 			ob_start();
@@ -79,11 +105,43 @@ function emd_shc_get_layout_list($atts, $args, $args_default, $fields) {
 			<input type='hidden' id='emd_app' name='emd_app' value='<?php echo esc_attr($fields['app']); ?>'>
 			<?php
 			}
+			if (is_array($atts) && !empty($atts['set'])) {
+				$set_list = $fields['shc'] . "_set_list";
+				global $$set_list;
+				$atts_set_list = explode(";", $atts['set']);
+				foreach ($atts_set_list as $myset) {
+					if (!empty($myset)) {
+						$atts_set_arr = explode("::", $myset);
+                                		if(count($atts_set_arr) == 4) {
+							${$set_list}[$atts_set_arr[1]] = $atts_set_arr[3];
+						}
+					}
+				}
+			}
+			if(is_array($atts) && isset($fields['has_json']) && $fields['has_json'] == 1){
+				foreach($atts as $myatt){
+					if(preg_match('/filter=/',$myatt)){
+						$filter_list = explode('=',$myatt);
+						$filter_list[1] = trim($filter_list[1],'"');
+						?>
+						<input type='hidden' id='atts_filter' name='atts_filter' value='<?php echo $filter_list[1]; ?>'>
+					<?php
+					}
+				}
+			}
 			emd_get_template_part($fields['app'], 'shc', str_replace('_', '-', $fields['shc']) . "-header");
 			$res_posts = Array();
 			$count_var = $fields['shc'] . "_count";
 			global $$count_var;
 			$$count_var = 0;
+			$shc_filter = $fields['shc'] . "_filter";
+			global $$shc_filter;
+			$$shc_filter = "";
+			if(isset($atts['fpass']) && $atts['fpass'] == 1){
+				if(!empty($atts['filter'])){
+					$$shc_filter = $atts['filter'];
+				}
+			}
 			while ($myshc_query->have_posts()) {
 				$myshc_query->the_post();
 				$in_post_id = get_the_ID();
@@ -94,8 +152,15 @@ function emd_shc_get_layout_list($atts, $args, $args_default, $fields) {
 				}
 			}
 			wp_reset_postdata();
+			if (is_array($atts) && !empty($atts['set'])) {
+				$$set_list=Array();
+			}
+
 			if (is_array($atts) && !empty($atts['filter'])) {
 				$emd_query->remove_filters();
+			}
+			if(!empty($args_default['filter'])){
+				$emd_query_def->remove_filters();
 			}
 			emd_get_template_part($fields['app'], 'shc', str_replace('_', '-', $fields['shc']) . "-footer");
 			if ($fields['has_pages'] && $myshc_query->max_num_pages > 1) {
@@ -116,7 +181,7 @@ function emd_shc_get_layout_list($atts, $args, $args_default, $fields) {
 				$paging = paginate_links(array(
 					'total' => $myshc_query->max_num_pages,
 					'current' => $fields['pageno'],
-					'base' => site_url() . $base,
+					'base' => home_url() . $base,
 					'format' => '%#%',
 					'type' => 'array',
 					'add_args' => true,
@@ -138,7 +203,79 @@ function emd_shc_get_layout_list($atts, $args, $args_default, $fields) {
 	}
 	return '';
 }
+/**
+ * Gets shortcode posts list
+ *
+ * @since WPAS 4.7
+ * @param array $atts shortcode attributes
+ * @param array $args query args
+ * @param array $args_default default query args
+ * @param array $fields
+ * @return array postids
+ */
+function emd_shc_get_posts_list($atts, $args, $args_default, $fields) {
+	global $wp_rewrite;
+	//fields -- app , class, shc , form, has_pages , pageno, theme
+	if(!empty($args_default['filter'])){
+		$emd_query_def = new Emd_Query($fields['class'], $fields['app'], $fields['shc']);
+		$emd_query_def->args_filter($args_default['filter']);
+		$args_default = array_merge($args_default,$emd_query_def->args);
+	}
 
+	if (empty($args)) {
+		if (is_array($atts) && !empty($atts['filter'])) {
+			$emd_query = new Emd_Query($fields['class'], $fields['app'], $fields['shc']);
+			$emd_query->args_filter($atts['filter']);
+			$args = $emd_query->args;
+		}
+		elseif(is_array($atts)){
+			foreach($atts as $myatt){
+				if(preg_match('/filter=/',$myatt)){
+					$filter_list = explode('=',$myatt);
+					$filter_list[1] = trim($filter_list[1],'"');
+					$emd_query = new Emd_Query($fields['class'], $fields['app'], $fields['shc']);
+					$emd_query->args_filter($filter_list[1]);
+					$args = $emd_query->args;
+				}
+			}
+		}
+		$args['post_type'] = $fields['class'];
+	}
+	$args = array_merge($args, $args_default);
+	if ($fields['form'] != '') {
+		$_SESSION[$fields['form'] . '_args'] = $args;
+	}
+	$has_limit_by = get_option($fields['app'] . "_has_limitby_cap");
+	if (isset($has_limit_by) && $has_limit_by == 1) {
+		$pids = apply_filters('emd_limit_by', Array() , $fields['app'], $args['post_type'],'frontend');
+		if(!empty($pids)){
+			$args['post__in'] = $pids;
+		}
+	}
+	$args['context'] = $fields['shc'];
+	$myshc_query = new WP_Query($args);
+	$res_posts = Array();
+	if ($myshc_query->have_posts()) {
+		while ($myshc_query->have_posts()) {
+			$myshc_query->the_post();
+			$in_post_id = get_the_ID();
+			if (!in_array($in_post_id, $res_posts)) {
+				$res_posts[] = $in_post_id;
+			}
+		}
+		wp_reset_postdata();
+		if (is_array($atts) && !empty($atts['filter'])) {
+			$emd_query->remove_filters();
+		}
+		if(!empty($args_default['filter'])){
+			$emd_query_def->remove_filters();
+		}
+	}
+	if (is_array($atts) && !empty($atts['filter'])) {
+		$emd_query->remove_filters();
+	}
+	return $res_posts;
+}
 /**
  * Creates hierarchial list
  *

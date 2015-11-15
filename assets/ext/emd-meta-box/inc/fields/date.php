@@ -55,7 +55,7 @@ if ( !class_exists( 'EMD_MB_Date_Field' ) )
 				isset( $field['clone'] ) && $field['clone'] ? '' : $field['id'],
 				$field['size'],
 				esc_attr( json_encode( $field['js_options'] ) ),
-				$field['data-cell']
+				isset( $field['data-cell'] ) ? $field['data-cell'] : ''
 			);
 		}
 

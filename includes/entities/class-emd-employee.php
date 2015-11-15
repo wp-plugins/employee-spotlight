@@ -3,7 +3,7 @@
  * Entity Class
  *
  * @package EMPSLIGHT_COM
- * @version 1.2.0
+ * @version 1.3.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -68,13 +68,7 @@ class Emd_Employee extends Emd_Entity {
 				}
 			}
 		}
-		$args = array(
-			'_builtin' => false,
-			'object_type' => Array(
-				$this->post_type
-			)
-		);
-		$taxonomies = get_taxonomies($args, 'objects');
+		$taxonomies = get_object_taxonomies($this->post_type, 'objects');
 		if (!empty($taxonomies)) {
 			foreach ($taxonomies as $taxonomy) {
 				$columns[$taxonomy->name] = $taxonomy->label;
@@ -124,11 +118,10 @@ class Emd_Employee extends Emd_Entity {
 			case 'image':
 			case 'thickbox_image':
 				$image_list = emd_mb_meta($column_id, 'type=image');
+				$value = "";
 				if (!empty($image_list)) {
-					$value = "";
-					foreach ($image_list as $myimage) {
-						$value.= "<img style='max-width:100%;height:auto;' src='" . $myimage['url'] . "' >";
-					}
+					$myimage = current($image_list);
+					$value = "<img style='max-width:100%;height:auto;' src='" . $myimage['url'] . "' >";
 				}
 			break;
 			case 'user':
@@ -169,6 +162,9 @@ class Emd_Employee extends Emd_Entity {
 					$value = '<span class="dashicons dashicons-no-alt"></span>';
 				}
 			break;
+		}
+		if (is_array($value)) {
+			$value = "<div class='clonelink'>" . implode("</div><div class='clonelink'>", $value) . "</div>";
 		}
 		echo $value;
 	}
@@ -309,9 +305,10 @@ class Emd_Employee extends Emd_Entity {
 		$this->sing_label = __('Employee', 'empslight-com');
 		$this->plural_label = __('Employees', 'empslight-com');
 		$this->menu_entity = 'emd_employee';
-		$this->boxes[] = array(
+		$this->boxes['emd_employee_info_emd_employee_0'] = array(
 			'id' => 'emd_employee_info_emd_employee_0',
 			'title' => __('Employee Info', 'empslight-com') ,
+			'app_name' => 'empslight_com',
 			'pages' => array(
 				'emd_employee'
 			) ,

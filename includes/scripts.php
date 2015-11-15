@@ -3,7 +3,7 @@
  * Enqueue Scripts Functions
  *
  * @package EMPSLIGHT_COM
- * @version 1.2.0
+ * @version 1.3.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -75,6 +75,7 @@ function empslight_com_load_admin_enq($hook) {
 		} elseif ($hook == 'edit.php') {
 			wp_enqueue_style('empslight-com-allview-css', EMPSLIGHT_COM_PLUGIN_URL . '/assets/css/allview.css');
 		}
+		wp_enqueue_style('jq-css', 'http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css');
 		if ($datetime_enq == 1) {
 			wp_enqueue_script("jquery-ui-timepicker", $dir_url . 'assets/ext/emd-meta-box/js/jqueryui/jquery-ui-timepicker-addon.js', array(
 				'jquery-ui-datepicker',
@@ -85,6 +86,14 @@ function empslight_com_load_admin_enq($hook) {
 			wp_enqueue_script("jquery-ui-datepicker");
 			$tab_enq = 1;
 		}
+	} elseif ($hook == 'edit-tags.php' && isset($_GET['post_type']) && in_array($_GET['post_type'], Array(
+		'emd_employee'
+	))) {
+		$theme_changer_enq = 1;
+	}
+	if (isset($theme_changer_enq) && $theme_changer_enq == 1) {
+		wp_enqueue_script("theme-changer", EMPSLIGHT_COM_PLUGIN_URL . 'assets/js/theme-changer.js');
+		wp_enqueue_style("empslight-com-css", EMPSLIGHT_COM_PLUGIN_URL . 'assets/css/empslight-com.css');
 	}
 }
 add_action('wp_enqueue_scripts', 'empslight_com_frontend_scripts');
@@ -96,6 +105,7 @@ add_action('wp_enqueue_scripts', 'empslight_com_frontend_scripts');
  */
 function empslight_com_frontend_scripts() {
 	$dir_url = EMPSLIGHT_COM_PLUGIN_URL;
+	wp_register_style('empslight-com-allview-css', $dir_url . '/assets/css/allview.css');
 	$grid_vars = Array();
 	$local_vars['ajax_url'] = admin_url('admin-ajax.php');
 	$wpas_shc_list = get_option('empslight_com_shc_list');
@@ -107,14 +117,10 @@ function empslight_com_frontend_scripts() {
 	wp_register_style('employee-circle-grid-cdn', $dir_url . 'assets/css/view-employee-circle-grid.css');
 	wp_register_style('single-employee-cdn', $dir_url . 'assets/css/view-single-employee.css');
 	wp_register_script('employee-circle-grid-js', $dir_url . 'assets/js/employee-circle-grid.js');
-	wp_register_style('employee-circle-grid-cdn', $dir_url . 'assets/css/view-employee-circle-grid.css');
-	wp_register_script('employee-circle-grid-js', $dir_url . 'assets/js/employee-circle-grid.js');
-	wp_register_style('empslight-com-allview-css', $dir_url . '/assets/css/allview.css');
 	if (is_single() && get_post_type() == 'emd_employee') {
 		wp_enqueue_script('jquery');
 		wp_enqueue_style('font-awesome');
 		wp_enqueue_style('single-employee-cdn');
-		wp_enqueue_script('single-employee-cdn');
 		wp_enqueue_style('empslight-com-allview-css');
 		return;
 	}

@@ -3,7 +3,7 @@
  * Entity Related Shortcode Functions
  *
  * @package EMPSLIGHT_COM
- * @version 1.2.0
+ * @version 1.3.0
  * @since WPAS 4.0
  */
 if (!defined('ABSPATH')) exit;
@@ -24,20 +24,22 @@ function empslight_com_employee_circle_grid_set_shc($atts, $args = Array() , $fo
 		'class' => 'emd_employee',
 		'shc' => 'employee_circle_grid',
 		'form' => $form_name,
-		'has_pages' => false,
+		'has_pages' => true,
 		'pageno' => $pageno,
 		'pgn_class' => '',
 		'theme' => 'na',
 		'hier' => 0,
 		'hier_type' => 'ul',
 		'hier_depth' => - 1,
-		'hier_class' => ''
+		'hier_class' => '',
+		'has_json' => 0,
 	);
 	$args_default = array(
-		'posts_per_page' => '9',
+		'posts_per_page' => '12',
 		'post_status' => 'publish',
 		'orderby' => 'date',
-		'order' => 'DESC'
+		'order' => 'DESC',
+		'filter' => ''
 	);
 	return emd_shc_get_layout_list($atts, $args, $args_default, $fields);
 }
@@ -47,6 +49,8 @@ function employee_circle_grid_list($atts) {
 	if ($show_shc == 1) {
 		wp_enqueue_script('jquery');
 		wp_enqueue_style('font-awesome');
+		wp_enqueue_style('jq-css');
+		wp_enqueue_script('jquery-ui-button');
 		wp_enqueue_style('employee-circle-grid-cdn');
 		wp_enqueue_script('employee-circle-grid-js');
 		add_action('wp_footer', 'empslight_com_enq_allview');

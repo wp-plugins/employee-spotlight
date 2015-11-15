@@ -233,11 +233,13 @@ class Emd_Entity {
 	protected function set_args_boxes(){
 		$search_args = Array();
 		$filter_args = Array();	
-		$this->boxes[0]['validation'] = array(
-			'onfocusout' => false,
-			'onkeyup' => false,
-			'onclick' => false
-		);
+		foreach($this->boxes as $kbox => $vbox){
+			$this->boxes[$kbox]['validation'] = array(
+				'onfocusout' => false,
+				'onkeyup' => false,
+				'onclick' => false
+			);
+		}
 		$myapp = str_replace("-", "_", $this->textdomain);
 		$attr_list = get_option($myapp . '_attr_list');
 		$sform_list = Array();
@@ -269,19 +271,19 @@ class Emd_Entity {
 					if (!empty($vattr['desc'])) {
 						$search_args[$kattr]['desc'] = $vattr['desc'];
 					}
-					$this->boxes[0]['fields'][$kattr]['name'] = $vattr['label'];
-					$this->boxes[0]['fields'][$kattr]['list_visible'] = $vattr['list_visible'];
-					$this->boxes[0]['fields'][$kattr]['id'] = $kattr;
+					$this->boxes[$vattr['mid']]['fields'][$kattr]['name'] = $vattr['label'];
+					$this->boxes[$vattr['mid']]['fields'][$kattr]['list_visible'] = $vattr['list_visible'];
+					$this->boxes[$vattr['mid']]['fields'][$kattr]['id'] = $kattr;
 					if ($vattr['display_type'] == 'user-adv') {
-						$this->boxes[0]['fields'][$kattr]['type'] = 'user';
+						$this->boxes[$vattr['mid']]['fields'][$kattr]['type'] = 'user';
 					} else {
-						$this->boxes[0]['fields'][$kattr]['type'] = $vattr['display_type'];
+						$this->boxes[$vattr['mid']]['fields'][$kattr]['type'] = $vattr['display_type'];
 					}
 					if (isset($vattr['roles'])) {
-						$this->boxes[0]['fields'][$kattr]['query_args']['role'] = $vattr['roles'];
+						$this->boxes[$vattr['mid']]['fields'][$kattr]['query_args']['role'] = $vattr['roles'];
 					}
 					if (isset($vattr['dformat'])) {
-						$this->boxes[0]['fields'][$kattr]['js_options'] = $vattr['dformat'];
+						$this->boxes[$vattr['mid']]['fields'][$kattr]['js_options'] = $vattr['dformat'];
 					}
 					$attr_fields = Array(
 						'hidden_func',
@@ -298,13 +300,16 @@ class Emd_Entity {
 						'address_field',
 						'data-formula',
 						'data-cell',
+						'clone',
+						'sort_clone',
+						'max_clone',
 					);
 					foreach ($attr_fields as $attr_field) {
 						if (isset($vattr[$attr_field])) {
-							$this->boxes[0]['fields'][$kattr][$attr_field] = $vattr[$attr_field];
+							$this->boxes[$vattr['mid']]['fields'][$kattr][$attr_field] = $vattr[$attr_field];
 						}
 					}
-					$this->boxes[0]['fields'][$kattr]['class'] = $kattr;
+					$this->boxes[$vattr['mid']]['fields'][$kattr]['class'] = $kattr;
 					//validation
 					if(!empty($sform_list)){
 						$vattr_req = 0;
@@ -313,14 +318,17 @@ class Emd_Entity {
 							 	if($glob_forms_list[$sform][$kattr]['req'] == 1){
 									$vattr_req = 1;
 								}
+							}
+							elseif(!isset($glob_forms_list[$sform][$kattr])) {
+								$vattr_req = $vattr['required'];
 							}	
 						}
 						$vattr['required'] = $vattr_req;
 					}
 					if ($vattr['required'] == 1) {
-						$this->boxes[0]['validation']['rules'][$kattr]['required'] = true;
+						$this->boxes[$vattr['mid']]['validation']['rules'][$kattr]['required'] = true;
 					} else {
-						$this->boxes[0]['validation']['rules'][$kattr]['required'] = false;
+						$this->boxes[$vattr['mid']]['validation']['rules'][$kattr]['required'] = false;
 					}
 					$valid_rules = Array(
 						'email',
@@ -352,12 +360,12 @@ class Emd_Entity {
 					);
 					foreach ($valid_rules as $vrule) {
 						if (isset($vattr[$vrule])) {
-							$this->boxes[0]['validation']['rules'][$kattr][$vrule] = $vattr[$vrule];
+							$this->boxes[$vattr['mid']]['validation']['rules'][$kattr][$vrule] = $vattr[$vrule];
 						}
 					}
 					if(!empty($vattr['conditional'])){
-						$this->boxes[0]['conditional'][$kattr] = $vattr['conditional'];
-						$this->boxes[0]['conditional'][$kattr]['type'] = $vattr['display_type'];
+						$this->boxes[$vattr['mid']]['conditional'][$kattr] = $vattr['conditional'];
+						$this->boxes[$vattr['mid']]['conditional'][$kattr]['type'] = $vattr['display_type'];
 					}
 					if ($vattr['filterable'] == 1) {
 						$filter_args[$kattr]['name'] = $vattr['label'];
@@ -389,8 +397,8 @@ class Emd_Entity {
 		if (!empty($tax_list[$this->post_type])) {
 			foreach ($tax_list[$this->post_type] as $ktax => $vtax) {
 				if(!empty($vtax['conditional']['attr_rules']) || !empty($vtax['conditional']['tax_rules'])){
-					$this->boxes[0]['tax_conditional'][$ktax] = $vtax['conditional'];
-					$this->boxes[0]['tax_conditional'][$ktax]['type'] = $vtax['cond_type'];
+					$this->boxes[$vattr['mid']]['tax_conditional'][$ktax] = $vtax['conditional'];
+					$this->boxes[$vattr['mid']]['tax_conditional'][$ktax]['type'] = $vtax['cond_type'];
 				}
 			}
 		}

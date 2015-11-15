@@ -23,6 +23,8 @@ function emd_get_comp_select() {
 	foreach ($emd_activated_plugins as $active_plugin) {
 		$app_name = str_replace("-", "_", $active_plugin);
 		$shc_list = get_option($app_name . '_shc_list');
+		$calendar_list = get_option($app_name . '_has_calendar');
+		$autocomplete_list = Array();
 		if (isset($shc_list['app'])) {
 			$comp_select.= "<option value='' style='font-style:italic;font-weight:bold;'>" . $shc_list['app'] . "</option>";
 		}
@@ -36,12 +38,24 @@ function emd_get_comp_select() {
 			$std_analytics = 'std';
 			$comp_select.= "<option value='' style='font-style:italic;font-weight:bold;padding-left:1em;'>" . __('Standards', 'emd-plugins') . "</option>";
 			foreach ($shc_list['shcs'] as $keyshc => $myshc) {
-				if ($keyshc == 'analytics') {
-					$std_analytics = 'analytics';
+				if($myshc['type'] != 'autocomplete'){
+					if ($keyshc == 'analytics') {
+						$std_analytics = 'analytics';
+					}
+					$comp_select.= "<option value='" . $keyshc . "' style='padding-left:2em;' app='" . $app_name . "'";
+					$comp_select.= " ent='" . $myshc['class_name'] . "'";
+					$comp_select.= ">" . $keyshc . "</option>";
 				}
-				$comp_select.= "<option value='" . $keyshc . "' style='padding-left:2em;' app='" . $app_name . "'";
-				$comp_select.= " ent='" . $myshc['class_name'] . "'";
-				$comp_select.= ">" . $keyshc . "</option>";
+				else {
+					$autocomplete_list[$keyshc] = $myshc;
+				}
+			}
+		}
+		if(!empty($autocomplete_list)){
+			$comp_select.= "<option value='' style='font-style:italic;font-weight:bold;padding-left:1em;'>" . __('AutoCompletes', 'emd-plugins') . "</option>";
+			foreach ($autocomplete_list as $keycomp => $mycomp) {
+				$comp_select.= "<option value='" . $keycomp . "' style='padding-left:2em;' app='" . $app_name . "'";
+				$comp_select.= ">" . $keycomp . "</option>";
 			}
 		}
 		if (isset($shc_list['integrations']) && !empty($shc_list['integrations'])) {
@@ -55,6 +69,10 @@ function emd_get_comp_select() {
 			$comp_select.= "<option value='' style='font-style:italic;font-weight:bold;padding-left:1em;'>" . __('Charts', 'emd-plugins') . "</option>";
 			foreach ($shc_list['charts'] as $keych => $mych) {
 				$comp_select.= "<option value='" . $keych . "' style='padding-left:2em;' app='" . $app_name . "'";
+				if($mych['chart_type'] == 'org'){
+					$comp_select.= " ent='" . $mych['class_name'] . "'";
+					$comp_select.= " chart='1'";
+				}
 				$comp_select.= ">" . $keych . "</option>";
 			}
 		}
@@ -63,6 +81,14 @@ function emd_get_comp_select() {
 			foreach ($shc_list['datagrids'] as $keydg => $mydg) {
 				$comp_select.= "<option value='" . $keydg . "' style='padding-left:2em;' app='" . $app_name . "'";
 				$comp_select.= ">" . $keydg . "</option>";
+			}
+		}
+		if(!empty($calendar_list)){
+			$comp_select.= "<option value='' style='font-style:italic;font-weight:bold;padding-left:1em;'>" . __('Calendars', 'emd-plugins') . "</option>";
+			foreach ($calendar_list as $keyc => $myc) {
+				$comp_select.= "<option value='" . $keyc . "' style='padding-left:2em;' calendar=1 app='" . $app_name . "'";
+				$comp_select.= " ent='" . $myc['entity'] . "'";
+				$comp_select.= ">" . $myc['label'] . "</option>";
 			}
 		}
 	}
@@ -108,7 +134,15 @@ function emd_shc_insert_button() {
 						if($('#wpas-components').val() != ''){
 						var shc_filters = '';
 						var shc_hiddens = '';
-						var shc = '[' + $('#wpas-components').val();
+						var shc_set = '';
+						var shc_hiddens_set = '';
+						if($('#wpas-components option:selected').attr('calendar') != undefined){
+							var shc = '[emd_calendar app="' + $('#wpas-components option:selected').attr('app') + '"';
+							shc += ' cname="' + $('#wpas-components').val() + '"';
+						}
+						else {	
+							var shc = '[' + $('#wpas-components').val();
+						}
 						var ent = $('#wpas-ent-list option:selected').val();
 						<?php do_action('emd_add_comp_' . $std_analytics . '_js'); ?>
 						shc +=  ']';

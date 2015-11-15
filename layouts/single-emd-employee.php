@@ -1,4 +1,5 @@
-<?php $ent_attrs = get_option('empslight_com_attr_list');
+<?php $real_post = $post;
+$ent_attrs = get_option('empslight_com_attr_list');
 ?>
 <div style="position:relative" class="emd-container">
 <div class="mainDetails row">

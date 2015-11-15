@@ -4,8 +4,8 @@ Plugin URI: https://emdplugins.com
 Author URI: https://emarketdesign.com
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 4.0
-Tested up to: 4.3.0
-Stable tag: 1.2.0
+Tested up to: 4.4.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: members profiles, our teams, team, team members, team plugin wordpress, profiles, teams, team manager, custom team management, custom team manager, responsive team manager, staff manager, team management, team manager, team member, team members, wordpress team manager, staff, meet, profiles, people, responsive, carousel, employees, employee, grid, social, company, intranet, directory,employee list, staff list, staff directory
@@ -39,7 +39,7 @@ Employee Spotlight comes with two responsive views which adjusts to the device s
 
 *Employee Directory WordPress Plugin*
 
-Employee directory solution for WordPress. Community and Pro editions are available.
+Improve your organization's internal and external communication with Employee Directory; advanced company directory solution. Community and Pro editions are available.
 
 [Employee Directory Community](https://wordpress.org/plugins/employee-directory/)
 
@@ -75,6 +75,9 @@ The simplest way to install is to click on 'Plugins' then 'Add' and type 'Employ
 6. Pro Edition offers Visual Shortcode Builder which you can use to create a subset of your employee profiles and display it using any of 10 views layouts.
 
 == Changelog ==
+= 1.3.0 =
+* Added page navigation and update employee count to 12 per page for circle grid view
+* Fixed misc bugs
 = 1.2.0 =
 * Fixed issues related to WordPress 4.3 upgrade
 * Enabled Office location taxonomy in the backend

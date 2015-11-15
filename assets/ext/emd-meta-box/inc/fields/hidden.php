@@ -34,7 +34,12 @@ if ( ! class_exists( 'EMD_MB_Hidden_Field' ) )
 								break;
 							case  'emd_autoinc':
 								$val = get_option($field['id'] . "_autoinc",$field['autoinc_start']);
-								$val = $val + $field['autoinc_incr'];
+								if($val < $field['autoinc_start']){
+									$val = $field['autoinc_start'];
+								}
+								else {
+									$val = $val + $field['autoinc_incr'];
+								}
 								break;
 						}
 					}
@@ -60,7 +65,10 @@ if ( ! class_exists( 'EMD_MB_Hidden_Field' ) )
 			$name = $field['id'];
 			update_post_meta($post_id, $name, $new);
 			if(isset($field['hidden_func']) && $field['hidden_func'] == 'autoinc'){
-				update_option($name . "_autoinc", $new);
+				$val = get_option($field['id'] . "_autoinc",$field['autoinc_start']);
+				if($new > $val){
+					update_option($name . "_autoinc", $new);
+				}
 			}
 		}
 	}

@@ -2,7 +2,15 @@ jQuery(document).ready(function($){
 	$.validator.addMethod('uniqueAttr',function(val,element){
 		var data_input = {};
 		$.each(unique_vars.keys,function(i,val){
-			data_input[val] = $('#'+val).val();
+			if(val == 'blt_title'){
+				data_input[val] = $('#title').val();
+			}
+			else if($('#'+val).length){
+				data_input[val] = $('#'+val).val();
+			}	
+			else {
+				data_input[val] = $('[name='+val+']').val();
+			}
 			});
 		data_input['post_ID'] = $('#post_ID').val();
 		var unique = true;
@@ -86,6 +94,38 @@ jQuery(document).ready(function($){
 			$('#post').siblings('#message').remove();
 			$('#post').before('<div id="message" class="error"><p>'+msg.join(', ')+  ' ' + unique_vars.reqtxt + '</p></div>');
 			return false;
+		}
+		else {
+			var data_input = {};
+			check_uniq =0;
+			$.each(unique_vars.keys,function(i,val){
+				if(val == 'blt_title'){
+					check_uniq = 1;
+					data_input[val] = $('#title').val();
+				}
+			});
+			if(unique_vars.keys.length == 1 && check_uniq == 1){
+				data_input['post_ID'] = $('#post_ID').val();
+				unique = 1;
+				$.ajax({
+					type: 'GET',
+					url: ajaxurl,
+					cache: false,
+					async: false,
+					data: {action:'emd_check_unique',data_input:data_input, ptype:pagenow,myapp:unique_vars.app_name},
+					success: function(response){
+						unique = response;
+					},
+				});
+				if(unique != '1'){
+					$('#publish').removeClass('button-primary-disabled');
+					$('#ajax-loading').attr( 'style','');
+					$('#post').siblings('#message').remove();
+					$('#title').addClass('error');
+					$('#post').before('<div id="message" class="error"><p>'+ unique_vars.msg + '</p></div>');
+					return false;
+				}
+			}
 		}
 	});
 });

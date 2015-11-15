@@ -51,7 +51,7 @@ class Emd_Widget extends WP_Widget {
 		$app = str_replace('-', '_', $this->text_domain);
 		$has_limit_by = get_option($app . "_has_limitby_cap");
 		if (isset($has_limit_by) && $has_limit_by == 1) {
-			$pids = apply_filters('emd_limit_by', $pids, $app, $this->class);
+			$pids = apply_filters('emd_limit_by', $pids, $app, $this->class,'frontend');
 		}
 		if ($this->type == 'entity') {
 			$args['filter'] = $this->filter;

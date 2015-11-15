@@ -75,4 +75,10 @@ jQuery( function ( $ )
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                         $( '.emd-mb-map-canvas' ).each(displayMap);
         });
+	$('.emd-bs-modal').on('shown.bs.modal', function () {
+                $( '.emd-mb-map-canvas' ).each(displayMap);
+	});
+	$('.emd-modal').click(function(event){
+                $( '.emd-mb-map-canvas' ).each(displayMap);
+        });
 } );

@@ -109,7 +109,7 @@ function emd_limit_author_search($app, $query, $has_limitby = 0) {
 		if ($has_limitby == 1) {
 			$pids = Array();
 			foreach (array_values($latest_ptypes) as $ptype) {
-				$pids = apply_filters('emd_limit_by', $pids, $app, $ptype);
+				$pids = apply_filters('emd_limit_by', $pids, $app, $ptype, 'frontend');
 			}
 			$query->set('post__in', $pids);
 		}
@@ -226,20 +226,32 @@ function emd_parse_template_tags($app, $message, $pid) {
 				$message = str_replace('{' . $match_tag . '}', $new, $message);
 			} elseif (preg_match('/^rel_/', $match_tag)) {
 				$new_rel = "";
+				$has_no_link = 0;
 				$new_match_tag = preg_replace('/^rel_/', '', $match_tag);
-				$myrel = $rel_list[$match_tag];
+				if(preg_match('/_nl$/', $match_tag)){
+					$new_match_tag = preg_replace('/_nl$/', '', $new_match_tag);
+					$has_no_link = 1;
+				}
+				$myrel = $rel_list['rel_' . $new_match_tag];
 				$from_to = "from";
 				$other = "to";
 				if ($myrel['from'] == $mypost->post_type) {
 					$from_to = "to";
 					$other = "from";
 				}
-				$conns = $wpdb->get_results("SELECT p2p_" . $from_to . " as pid FROM {$wpdb->p2p} WHERE p2p_type='" . $new_match_tag . "' AND p2p_" . $other . "='" . $pid . "'", ARRAY_A);
-				foreach ($conns as $mycon) {
-					$rpost = get_post($mycon['pid']);
-					$new_rel.= $rpost->post_title . ",";
+				$conns = $wpdb->get_results("SELECT p2p_" . $from_to . " as pid FROM {$wpdb->p2p} WHERE p2p_type='" . $new_match_tag . "' AND p2p_" . $other . "='" . $pid . "'", ARRAY_A);	
+				if(!empty($conns)){
+					foreach ($conns as $mycon) {
+						$rpost = get_post($mycon['pid']);
+						if($has_no_link == 1){
+							$new_rel.= $rpost->post_title . ",";
+						}
+						else {
+							$new_rel.= "<a href='" . get_permalink($mycon['pid']) . "'>" . $rpost->post_title . "</a>,";
+						}
+					}
+					$new_rel = rtrim($new_rel, ",");
 				}
-				$new_rel = rtrim($new_rel, ",");
 				$message = str_replace('{' . $match_tag . '}', $new_rel, $message);
 			} else {
 				if (preg_match('/_nl$/', $match_tag)) {
@@ -350,23 +362,30 @@ function emd_check_unique() {
 	$post_type = isset($_GET['ptype']) ? $_GET['ptype'] : '';
 	$myapp = isset($_GET['myapp']) ? $_GET['myapp'] : '';
 	$ent_list = get_option($myapp . "_ent_list");
+	$ent_attrs = get_option($myapp . "_attr_list");
 	$uniq_fields = $ent_list[$post_type]['unique_keys'];
+
 	if(!is_array($form_data)){
 		parse_str(stripslashes($form_data),$form_arr);
 	}
 	else {
 		$form_arr = $form_data;
 	}
+	$title_set = 0;
 	foreach ($form_arr as $fkey => $myform_field) {
-		if (in_array($fkey, $uniq_fields)) {
-			$data[$fkey] = $myform_field;
-		}
-		if ($fkey == 'post_ID') {
+		if($fkey == 'blt_title'){
+			$title_set = 1;
+			$data['blt_title'] = $myform_field;
+		}	
+		elseif($fkey == 'post_ID'){
 			$post_id = $myform_field;
+		}
+		elseif(in_array($fkey, $uniq_fields)) {
+			$data[$fkey] = emd_translate_date_format($ent_attrs[$post_type][$fkey], $myform_field, 0);
 		}
 	}
 	if (!empty($data) && !empty($post_type)) {
-		$response = emd_check_uniq_from_wpdb($data, $post_id, $post_type);
+		$response = emd_check_uniq_from_wpdb($data, $post_id, $post_type, $title_set);
 	}
 	echo $response;
 	die();
@@ -378,18 +397,27 @@ function emd_check_unique() {
  *
  * @return bool $response
  */
-function emd_check_uniq_from_wpdb($data, $post_id, $post_type) {
+function emd_check_uniq_from_wpdb($data, $post_id, $post_type, $title_set= 0) {
 	global $wpdb;
 	$where = "";
+	$where_last = "";
 	$join = "";
 	$count = 1;
 	foreach ($data as $key => $val) {
-		$join.= " LEFT JOIN " . $wpdb->postmeta . " pm" . $count . " ON p.ID = pm" . $count . ".post_id";
-		$where.= " pm" . $count . ".meta_key='" . $key . "' AND pm" . $count . ".meta_value='" . $val . "' AND ";
-		$count++;
+		if($key == 'blt_title'){
+			$where_last = " AND p.post_title='" . $val . "'";
+		}
+		else {
+			$join.= " LEFT JOIN " . $wpdb->postmeta . " pm" . $count . " ON p.ID = pm" . $count . ".post_id";
+			$where.= " pm" . $count . ".meta_key='" . $key . "' AND pm" . $count . ".meta_value='" . $val . "' AND ";
+			$count++;
+		}
 	}
 	$where = rtrim($where, "AND");
-	$result_arr = $wpdb->get_results("SELECT p.ID FROM " . $wpdb->posts . " p " . $join . " WHERE " . $where . " p.post_type = '" . $post_type . "'", ARRAY_A);
+	if(empty($join)){
+		$where_last .= " AND p.ID != '" . $post_id . "'";
+	}
+	$result_arr = $wpdb->get_results("SELECT p.ID FROM " . $wpdb->posts . " p " . $join . " WHERE " . $where . " p.post_type = '" . $post_type . "'" . $where_last, ARRAY_A);
 	if (empty($result_arr)) {
 		return true;
 	} elseif (!empty($post_id) && $result_arr[0]['ID'] == $post_id) {

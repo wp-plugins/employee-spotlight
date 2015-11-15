@@ -1,4 +1,5 @@
-<?php global $employee_circle_grid_count;
+<?php global $employee_circle_grid_count, $employee_circle_grid_filter;
+$real_post = $post;
 $ent_attrs = get_option('empslight_com_attr_list');
 ?>
 <?php echo (($employee_circle_grid_count > 1 and ($employee_circle_grid_count % 2 == 0 or $employee_circle_grid_count % 3 == 0)) ? '

@@ -183,7 +183,7 @@ function emd_activate_deactivate_license() {
 				);
 
 		// Call the custom API.
-		$response = wp_remote_get(add_query_arg($api_params, constant(strtoupper($license_on) . '_EDD_STORE_URL')) , array(
+		$response = wp_remote_post(add_query_arg($api_params, constant(strtoupper($license_on) . '_EDD_STORE_URL')) , array(
 					'timeout' => 15,
 					'sslverify' => false
 					));

@@ -13,7 +13,7 @@ if ( !class_exists( 'EMD_MB_Map_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
-			wp_enqueue_script( 'googlemap', 'https://maps.google.com/maps/api/js?sensor=false', array(), '', true );
+			wp_enqueue_script( 'googlemap', 'https://maps.google.com/maps/api/js', array(), '', true );
 			wp_enqueue_style( 'emd-mb-map', EMD_MB_CSS_URL . 'map.css' );
 			wp_enqueue_script( 'emd-mb-map', EMD_MB_JS_URL . 'map.js', array( 'jquery', 'jquery-ui-autocomplete', 'googlemap' ), EMD_MB_VER, true );
 		}
@@ -96,7 +96,7 @@ if ( !class_exists( 'EMD_MB_Map_Field' ) )
 			 * Enqueue scripts
 			 * Note: We still can enqueue script which outputs in the footer
 			 */
-			wp_register_script( 'google-maps', 'https://maps.google.com/maps/api/js?sensor=false', array(), '', true );
+			wp_register_script( 'google-maps', 'https://maps.google.com/maps/api/js', array(), '', true );
 			wp_enqueue_script( 'emd-mb-map-frontend', EMD_MB_JS_URL . 'map-frontend.js', array( 'jquery','google-maps' ), '', true );
 			// Map parameters
 			$args = wp_parse_args( $args, array(

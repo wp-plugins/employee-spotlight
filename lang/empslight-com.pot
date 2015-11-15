@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-08-25T11:31:01-04:00\n"
-"POT-Creation-Date: 2015-08-25T11:31:01-04:00\n"
+"PO-Revision-Date: 2015-11-14T23:42:11-05:00\n"
+"POT-Creation-Date: 2015-11-14T23:42:11-05:00\n"
 
 #: employee-spotlight/employee-spotlight.php:68
 msgid "Cheatin&#8217; huh?"
@@ -255,57 +255,63 @@ msgstr ""
 msgid "Like our plugin? Leave us a review"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:182
+#: employee-spotlight/includes/class-install-deactivate.php:184
 msgid "Title"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:192
+#: employee-spotlight/includes/class-install-deactivate.php:194
 msgid "Employee Circle Grid"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:205
+#: employee-spotlight/includes/class-install-deactivate.php:208
 msgid "Sets employee as featured which can be used to select employees in available views using Visual Shortcode Builder and Featured employee widget."
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:219
+#: employee-spotlight/includes/class-install-deactivate.php:223
 msgid "Photo of the employee. 250x250 is the preferred size."
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:341
+#: employee-spotlight/includes/class-install-deactivate.php:355
 msgid "Groups"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:350
+#: employee-spotlight/includes/class-install-deactivate.php:364
 msgid "Locations"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:416
+#: employee-spotlight/includes/class-install-deactivate.php:431
 msgid "New To Employee Spotlight? Review the documentation!"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:416
-#: employee-spotlight/includes/class-install-deactivate.php:428
+#: employee-spotlight/includes/class-install-deactivate.php:431
+#: employee-spotlight/includes/class-install-deactivate.php:443
+#: employee-spotlight/includes/class-install-deactivate.php:455
 msgid "&#187;"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:416
-#: employee-spotlight/includes/class-install-deactivate.php:428
+#: employee-spotlight/includes/class-install-deactivate.php:431
+#: employee-spotlight/includes/class-install-deactivate.php:443
+#: employee-spotlight/includes/class-install-deactivate.php:455
 msgid "Dismiss"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:428
+#: employee-spotlight/includes/class-install-deactivate.php:443
 msgid "Upgrade to Professional Version Now!"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:434
+#: employee-spotlight/includes/class-install-deactivate.php:455
+msgid "Win a Free Employee Spotlight Pro!"
+msgstr ""
+
+#: employee-spotlight/includes/class-install-deactivate.php:461
 msgid "Welcome to Employee Spotlight"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:435
+#: employee-spotlight/includes/class-install-deactivate.php:462
 msgid "Setup Employee Spotlight Pages"
 msgstr ""
 
-#: employee-spotlight/includes/class-install-deactivate.php:435
+#: employee-spotlight/includes/class-install-deactivate.php:462
 msgid "Skip setup"
 msgstr ""
 
@@ -322,125 +328,125 @@ msgstr ""
 msgid "Featured Employees"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:184
-#: employee-spotlight/includes/entities/class-emd-employee.php:309
+#: employee-spotlight/includes/entities/class-emd-employee.php:180
+#: employee-spotlight/includes/entities/class-emd-employee.php:305
 msgid "Employee"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:185
+#: employee-spotlight/includes/entities/class-emd-employee.php:181
 msgid "Add New"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:186
+#: employee-spotlight/includes/entities/class-emd-employee.php:182
 msgid "Add New Employee"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:187
+#: employee-spotlight/includes/entities/class-emd-employee.php:183
 msgid "Edit Employee"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:188
+#: employee-spotlight/includes/entities/class-emd-employee.php:184
 msgid "New Employee"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:189
+#: employee-spotlight/includes/entities/class-emd-employee.php:185
 msgid "All Employees"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:190
+#: employee-spotlight/includes/entities/class-emd-employee.php:186
 msgid "View Employee"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:191
+#: employee-spotlight/includes/entities/class-emd-employee.php:187
 msgid "Search Employees"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:192
+#: employee-spotlight/includes/entities/class-emd-employee.php:188
 msgid "No Employees Found"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:193
+#: employee-spotlight/includes/entities/class-emd-employee.php:189
 msgid "No Employees Found In Trash"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:224
+#: employee-spotlight/includes/entities/class-emd-employee.php:220
 msgid "Search Groups"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:225
+#: employee-spotlight/includes/entities/class-emd-employee.php:221
 msgid "Popular Groups"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:226
-#: employee-spotlight/includes/entities/class-emd-employee.php:265
+#: employee-spotlight/includes/entities/class-emd-employee.php:222
+#: employee-spotlight/includes/entities/class-emd-employee.php:261
 msgid "All"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:229
+#: employee-spotlight/includes/entities/class-emd-employee.php:225
 msgid "Edit Group"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:230
+#: employee-spotlight/includes/entities/class-emd-employee.php:226
 msgid "Update Group"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:231
+#: employee-spotlight/includes/entities/class-emd-employee.php:227
 msgid "Add New Group"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:232
+#: employee-spotlight/includes/entities/class-emd-employee.php:228
 msgid "Add New Group Name"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:233
+#: employee-spotlight/includes/entities/class-emd-employee.php:229
 msgid "Seperate Groups with commas"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:234
+#: employee-spotlight/includes/entities/class-emd-employee.php:230
 msgid "Add or Remove Groups"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:235
+#: employee-spotlight/includes/entities/class-emd-employee.php:231
 msgid "Choose from the most used Groups"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:263
+#: employee-spotlight/includes/entities/class-emd-employee.php:259
 msgid "Search Locations"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:264
+#: employee-spotlight/includes/entities/class-emd-employee.php:260
 msgid "Popular Locations"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:268
+#: employee-spotlight/includes/entities/class-emd-employee.php:264
 msgid "Edit Location"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:269
+#: employee-spotlight/includes/entities/class-emd-employee.php:265
 msgid "Update Location"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:270
+#: employee-spotlight/includes/entities/class-emd-employee.php:266
 msgid "Add New Location"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:271
+#: employee-spotlight/includes/entities/class-emd-employee.php:267
 msgid "Add New Location Name"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:272
+#: employee-spotlight/includes/entities/class-emd-employee.php:268
 msgid "Seperate Locations with commas"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:273
+#: employee-spotlight/includes/entities/class-emd-employee.php:269
 msgid "Add or Remove Locations"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:274
+#: employee-spotlight/includes/entities/class-emd-employee.php:270
 msgid "Choose from the most used Locations"
 msgstr ""
 
-#: employee-spotlight/includes/entities/class-emd-employee.php:314
+#: employee-spotlight/includes/entities/class-emd-employee.php:310
 msgid "Employee Info"
 msgstr ""
 
@@ -456,6 +462,6 @@ msgstr ""
 msgid "Taxonomy"
 msgstr ""
 
-#: employee-spotlight/layouts/shc-employee-circle-grid-content.php:38
+#: employee-spotlight/layouts/shc-employee-circle-grid-content.php:39
 msgid "Go to the personal page of"
 msgstr ""

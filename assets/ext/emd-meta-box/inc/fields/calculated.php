@@ -15,6 +15,7 @@ if ( ! class_exists( 'EMD_MB_Calculated_Field' ) )
                 {
                         wp_enqueue_script( 'wpas-calculate', EMD_MB_URL . '../calculate/wpas-calculate.min.js');
                         wp_enqueue_script( 'calculate', EMD_MB_JS_URL . 'calculate.js');
+			wp_localize_script('calculate','app_name',EMD_MB_APP);
                 }
 
 		/**
@@ -35,8 +36,8 @@ if ( ! class_exists( 'EMD_MB_Calculated_Field' ) )
 				$field['placeholder'],
 				$field['size'],
 				!$field['datalist'] ?  '' : "list='{$field['datalist']['id']}'",
-				str_replace("\"","'",$field['data-formula']),
-				$field['data-cell'],
+				isset($field['data-formula']) ? str_replace("\"","'",$field['data-formula']) : '',
+				isset($field['data-cell']) ? $field['data-cell'] : '',
 				self::datalist_html($field)
 			);
 		}
