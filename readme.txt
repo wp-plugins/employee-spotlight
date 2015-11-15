@@ -37,7 +37,7 @@ Employee Spotlight comes with two responsive views which adjusts to the device s
 
 > https://emdplugins.com/support/
 
-*Employee Directory WordPress Plugin*
+= Employee Directory Pro =
 
 Improve your organization's internal and external communication with Employee Directory; advanced company directory solution. Community and Pro editions are available.
 
